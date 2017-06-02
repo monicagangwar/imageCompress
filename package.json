@@ -1,0 +1,30 @@
+{
+  "name": "imagecompressapi",
+  "version": "1.0.0",
+  "description": "api to compress images",
+  "main": "server.js",
+  "dependencies": {
+    "bluebird": "^3.5.0",
+    "boom": "^5.1.0",
+    "child_process": "^1.0.2",
+    "fs": "0.0.1-security",
+    "gifsicle": "^3.0.4",
+    "hapi": "^16.3.0",
+    "joi": "^10.5.2",
+    "jpegtran-bin": "^3.2.0",
+    "lodash": "^4.17.4",
+    "optipng-bin": "^4.0.0",
+    "request": "^2.81.0",
+    "request-promise": "^4.2.1",
+    "url": "^0.11.0"
+  },
+  "devDependencies": {
+    "nodemon": "^1.11.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "author": "Monica Gangwar",
+  "license": "ISC"
+}
