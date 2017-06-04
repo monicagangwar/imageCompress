@@ -25,7 +25,6 @@ const validate = (uri) => {
     return Rp.head(uri)
     .then( (res) => {
 
-        console.log(res['content-type']);
         const fileName = getFileName(uri) + Date.now();
         switch(res['content-type']){
 
@@ -42,12 +41,17 @@ const download = (uri) => {
     return validate(uri)
     .then( ([filePath, fileName, type]) => {
 
-        return Promise.all([
-            filePath,
-            fileName,
-            type,
-            Request(uri).pipe(Fs.createWriteStream(filePath + fileName + '.' + type))
-        ]);
+        return new Promise( (resolve, reject) => {
+            const writeStream = Fs.createWriteStream(filePath + fileName + '.' + type);
+            Request(uri).pipe(writeStream);
+            writeStream.on('close', () => {
+                resolve([filePath, fileName, type]);
+            });
+            writeStream.on('error', (err) => {
+
+                throw Boom.create(500, err.message);
+            })
+        })
     });
 }
 
@@ -58,12 +62,12 @@ exports.downloadAndCompress = (uris) => {
         return chain.then( () => {
 
             return download(uri)
-            .then( ([filePath, fileName, type, writeStream]) => {
+            .then( ([filePath, fileName, type]) => {
 
                 switch(type) {
-                    case 'jpg': return Compress.compressJpg(filePath, fileName, writeStream);
-                    case 'png': return Compress.compressPng(filePath, fileName, writeStream);
-                    case 'gif': return Compress.compressGif(filePath, fileName, writeStream);
+                    case 'jpg': return Compress.compressJpg(filePath, fileName);
+                    case 'png': return Compress.compressPng(filePath, fileName);
+                    case 'gif': return Compress.compressGif(filePath, fileName);
                 }
             });
         })
