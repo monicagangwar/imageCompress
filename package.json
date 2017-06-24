@@ -8,13 +8,14 @@
     "boom": "^5.1.0",
     "fs": "0.0.1-security",
     "hapi": "^16.3.0",
+    "inert": "^4.2.0",
     "joi": "^10.5.2",
     "jpegtran": "^1.0.5",
     "lodash": "^4.17.4",
     "request": "^2.81.0",
     "request-promise": "^4.2.1",
-    "stream": "0.0.2",
-    "url": "^0.11.0"
+    "url": "^0.11.0",
+    "vision": "^4.1.1"
   },
   "devDependencies": {
     "nodemon": "^1.11.0"

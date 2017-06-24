@@ -5,16 +5,9 @@ const Stream = require('stream');
 const Constants = require('../helpers/constants');
 const Jpegtran = require('jpegtran');
 
-exports.compressJpg = (srcFilePath, srcFileName) => {
+exports.compressJpeg = () => {
 
-    const srcFile = srcFilePath + srcFileName + '.jpg';
-    const destFileName = srcFileName + '.compressed';
-    const destFile = srcFilePath + destFileName + '.jpg';
-    const compressor = new Jpegtran(['-copy', 'none', '-optimize', '-progressive']);
-    const compressWriteStream = Fs.createWriteStream(destFile);
-
-    Fs.createReadStream(srcFile).pipe(compressor).pipe(compressWriteStream);
-    return Promise.all([compressWriteStream,destFile, destFileName , Constants.CONTENT_TYPE_JPG]);
+    return new Jpegtran(['-copy', 'none', '-optimize', '-progressive']);
 };
 
 exports.compressPng = (srcFilePath, srcFileName, writeStream) => {

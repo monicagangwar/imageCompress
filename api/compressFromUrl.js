@@ -12,14 +12,25 @@ module.exports = [
         handler: (req, reply) => {
 
             return CompressFromUrl.downloadAndCompress(req.payload)
-            .then(([writeStream, filePath, fileName, type]) => {
+            .then((compressedImgs) => {
 
-                return writeStream.on('close', () => {
+                if(compressedImgs.length > 1){
+                    reply(compressedImgs);
+                }
+                else {
+                    console.log('here');
+                    console.log(compressedImgs[0]);
+                    reply.file(compressedImgs[0]);
+                }
+            })
+            .catch( (err) => {
 
-                    reply(Fs.createReadStream(filePath))
-                    .header('Content-type', type)
-                    .header('Content-disposition', `attachment;filename=${fileName}`);
-                })
+                if(err.isBoom){
+                    reply(err);
+                }
+                else{
+                    reply(Boom.create(500, err.message));
+                }
             });
         },
     }
