@@ -12,6 +12,7 @@
     "joi": "^10.5.2",
     "jpegtran": "^1.0.5",
     "lodash": "^4.17.4",
+    "optipng": "^1.1.0",
     "request": "^2.81.0",
     "request-promise": "^4.2.1",
     "url": "^0.11.0",

@@ -18,7 +18,7 @@ const getFileName = (uri) => {
            .replace('jpg', '')
            .replace('jpeg', '')
            .replace('png', '')
-           .replace('gif', '')
+           .replace('gif', '');
 }
 
 const validate = (uri) => {
@@ -31,8 +31,7 @@ const validate = (uri) => {
 
             case Constants.JPEG.CONTENT_TYPE: return ['JPEG', fileName, Compress.compressJpeg()];
             case Constants.JPG.CONTENT_TYPE: return ['JPG', fileName, Compress.compressJpeg()];
-            case Constants.PNG.CONTENT_TYPE: return ['PNG', fileName, Compress.compressPng];
-            case Constants.GIF.CONTENT_TYPE: return ['GIF', fileName, Compress.compressGif];
+            case Constants.PNG.CONTENT_TYPE: return ['PNG', fileName, Compress.compressPng()];
             default: throw Boom.create(400, 'Content type is not an image');
         }
     });
@@ -64,7 +63,6 @@ const download = (uri) => {
 
 exports.downloadAndCompress = (uris) => {
 
-    const compressedImgs = [];
     const steps = _.map(uris, (uri) => {
         return download(uri)
         .then( ([type, fileName, compressor]) => {
@@ -87,15 +85,19 @@ exports.downloadAndCompress = (uris) => {
                     throw Boom.create(500, 'Error in reading the original file: ' + err.message);
                 });
                 compressedWriteStream.on('close', () => {
-                    compressedImgs.push(destFile);
-                    return resolve(1);
+
+                    const imgDetails = {}
+                    const sizeCompressed = Fs.statSync(destFile).size;  // converting from bytes to megabytes
+                    const sizeOriginal = Fs.statSync(srcFile).size;
+                    imgDetails['sizeOriginal'] = sizeOriginal;
+                    imgDetails['sizeCompressed'] = sizeCompressed;
+                    imgDetails['compressed'] = 100 * ( 1 - ( sizeCompressed / sizeOriginal));
+                    imgDetails['filepath'] = destFile;
+                    Fs.unlink(srcFile);
+                    return resolve(imgDetails);
                 });
             });
         });
     });
-    return Promise.all(steps)
-    .then( () => {
-
-        return compressedImgs;
-    });
+    return Promise.all(steps);
 }
