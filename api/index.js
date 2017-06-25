@@ -6,7 +6,7 @@ exports.register = (server, options, next) => {
         if (err) console.log(err);
     });
     server.route(require('./compressFromUrl'));
-    // server.route(require('./compressFromCsv'));
+    server.route(require('./compressFromCsv'));
     server.route(require('./compressFromPhoto'));
     next();
 };

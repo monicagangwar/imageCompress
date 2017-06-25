@@ -26,6 +26,12 @@ const Constants = {
         UPLOAD_PATH: __dirname + '/../Utility/gif',
         EXTENSION: 'gif'
     },
+    CSV: {
+        CONTENT_TYPE: 'text/csv',
+        DOWNLOAD_PATH: __dirname + '/../Utility',
+        UPLOAD_PATH: __dirname + '/../Utility',
+        EXTENSION: 'csv'
+    },
     EXECUTABLE: {
         CONTENT_TYPE: 'application/octet-stream'
     }
