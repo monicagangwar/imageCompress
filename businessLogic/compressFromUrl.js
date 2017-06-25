@@ -17,8 +17,7 @@ const getFileName = (uri) => {
            .pop()
            .replace('jpg', '')
            .replace('jpeg', '')
-           .replace('png', '')
-           .replace('gif', '');
+           .replace('png', '');
 }
 
 const validate = (uri) => {
@@ -26,7 +25,7 @@ const validate = (uri) => {
     return Rp.head(uri)
     .then( (res) => {
 
-        const fileName = getFileName(uri) + Date.now();
+        const fileName = getFileName(uri) + '_' + Date.now();
         switch(res['content-type']){
 
             case Constants.JPEG.CONTENT_TYPE: return ['JPEG', fileName, Compress.compressJpeg()];

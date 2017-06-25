@@ -26,6 +26,9 @@ const Constants = {
         UPLOAD_PATH: __dirname + '/../Utility/gif',
         EXTENSION: 'gif'
     },
+    EXECUTABLE: {
+        CONTENT_TYPE: 'application/octet-stream'
+    }
 }
 
 module.exports = Constants;
